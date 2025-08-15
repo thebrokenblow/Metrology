@@ -1,5 +1,8 @@
+using Metrology.Web.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Inject(builder.Configuration);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

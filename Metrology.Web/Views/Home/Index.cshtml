@@ -1,8 +1,141 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Метрологическая служба предприятия";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-4">@ViewData["Title"]</h1>
+            <p class="lead">Система учёта измерительного оборудования и поверочных средств</p>
+        </div>
+    </div>
+
+    <!-- Информационные карточки -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-primary" style="cursor: pointer;">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                            <i class="fas fa-tools fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title mb-0">Учёт оборудования</h5>
+                    </div>
+                    <p class="card-text">Полная база данных всех измерительных приборов предприятия с историей поверок и техническим состоянием.</p>
+                    <a class="nav-link text-dark" asp-controller="Equipment" asp-action="Index" style="cursor: pointer;">Перейти</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-success" style="cursor: pointer;">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 p-3 rounded me-3">
+                            <i class="fas fa-calendar-check fa-2x text-success"></i>
+                        </div>
+                        <h5 class="card-title mb-0">График поверок</h5>
+                    </div>
+                    <p class="card-text">Планирование и контроль сроков поверки оборудования с автоматическими уведомлениями.</p>
+                    <a class="nav-link text-dark" asp-controller="Verification" asp-action="Index" style="cursor: pointer;">Перейти</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-info" style="cursor: pointer;">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-info bg-opacity-10 p-3 rounded me-3">
+                            <i class="fas fa-users fa-2x text-info"></i>
+                        </div>
+                        <h5 class="card-title mb-0">Сотрудники</h5>
+                    </div>
+                    <p class="card-text">Управление персоналом метрологической службы и назначение ответственных за оборудование.</p>
+                    <a class="nav-link text-dark" asp-controller="Employee" asp-action="Index" style="cursor: pointer;">Перейти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Статистика -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Статистика оборудования</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4 border-end">
+                            <h3 class="text-primary">@ViewBag.TotalEquipment</h3>
+                            <p class="text-muted mb-0">Всего приборов</p>
+                        </div>
+                        <div class="col-4 border-end">
+                            <h3 class="text-success">@ViewBag.ActiveEquipment</h3>
+                            <p class="text-muted mb-0">Активных</p>
+                        </div>
+                        <div class="col-4">
+                            <h3 class="text-warning">@ViewBag.DueForVerification</h3>
+                            <p class="text-muted mb-0">Требуют поверки</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-bell me-2"></i>Последние события</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Завершена поверка манометров цеха №1</span>
+                            <small class="text-muted">Сегодня, 10:45</small>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Поступило новое оборудование</span>
+                            <small class="text-muted">Вчера, 15:30</small>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Обновлён график поверок на июнь</span>
+                            <small class="text-muted">2 дня назад</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экстренное уведомление -->
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <h5 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>Внимание!</h5>
+        <p>До окончания срока поверки термометров в цехе №3 осталось <strong>5 дней</strong>.</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 </div>
+
+<style>
+    .card {
+        transition: transform 0.2s;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        cursor: pointer; /* Добавлено для всех карточек */
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    .card-title {
+        font-weight: 600;
+    }
+    .display-4 {
+        font-weight: 700;
+        color: #2c3e50;
+    }
+    /* Добавлено для ссылок внутри карточек */
+    .card a {
+        cursor: pointer;
+    }
+</style>
