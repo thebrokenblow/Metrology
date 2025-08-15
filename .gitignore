@@ -1,0 +1,111 @@
+﻿### Rider ###
+# Игнорируем файлы конфигурации Rider
+.idea/
+*.sln.iml
+*.userprefs
+*.csproj.user
+*.DotSettings
+
+### Visual Studio ###
+# Файлы пользовательских настроек
+*.user
+*.suo
+*.userosscache
+
+# Файлы результатов сборки
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Файлы пакетов NuGet
+**/[Pp]ackages/*
+!**/[Pp]ackages/repositories.config
+.nuget/
+*.nupkg
+NuGet.exe
+NuGet.Config
+
+# Резервные файлы и файлы преобразования
+*.bak
+*.tmp
+*.cache
+*.patch
+
+### ASP.NET Core ###
+# Файлы запуска
+appsettings.*.json
+appsettings.json
+launchSettings.json
+
+# Временные файлы
+*.swp
+*.*~
+project.lock.json
+
+# Файлы компиляции
+**/wwwroot/lib/
+**/wwwroot/dist/
+
+# Файлы сборки и публикации
+**/publish/
+**/bin/
+**/obj/
+
+# Файлы тестов
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+### ОС ###
+# Файлы ОС
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### Node.js ###
+# Зависимости
+node_modules/
+
+# Логи
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+### Dotnet ###
+# Файлы CLI
+.dotnet/
+
+# Локальные инструменты .NET
+.dotnet/tools/
+
+# Игнорируем локальные настройки
+.vs/
+
+### Базы данных ###
+# Локальные БД
+*.mdf
+*.ldf
+*.sdf
+
+# Миграции (можно раскомментировать если не храните миграции в репозитории)
+# Migrations/
+
+### Docker ###
+# Игнорируем docker-файлы если не используете
+# */docker-compose.yml
+# */Dockerfile
+# */dockerignore
+
+### Resharper ###
+# Кэш ReSharper
+_ReSharper.*
+*.ReSharper
