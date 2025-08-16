@@ -5,31 +5,45 @@ namespace Metrology.Data.Repositories;
 
 public class EmployeeRepository(NpgsqlDataSource dataSource)
 {
-    public async Task<List<EmployeeDto>> GetEmployeesPaginatedAsync(
-        int offset = 0,
-        int limit = 10,
+    public async Task<(List<EmployeeDto> Employees, int FilteredCount)> GetEmployeesPaginatedAsync(
+        int offset,
+        int limit,
+        string? searchString = null,
+        int? departmentId = null, 
+        int? positionId = null, 
         CancellationToken cancellationToken = default)
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         
         try
         {
-            await using var command = new NpgsqlCommand(
-                "SELECT * FROM get_employees_paginated(@count_skip, @count_take)",
+            var employees = new List<EmployeeDto>();
+            var filteredCount = 0;
+            
+            var dataCommand = new NpgsqlCommand(
+                "SELECT * FROM get_filtered_employees(@position_id, @department_id, @search_string, @offset, @limit)",
                 connection);
             
-            command.Parameters.AddWithValue("count_skip", offset);
-            command.Parameters.AddWithValue("count_take", limit);
+            dataCommand.Parameters.AddWithValue("position_id", positionId ?? (object)DBNull.Value);
+            dataCommand.Parameters.AddWithValue("department_id", departmentId ?? (object)DBNull.Value);
+            dataCommand.Parameters.AddWithValue("search_string", searchString ?? (object)DBNull.Value);
+            dataCommand.Parameters.AddWithValue("offset", offset);
+            dataCommand.Parameters.AddWithValue("limit", limit);
             
-            await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-
-            var employees = new List<EmployeeDto>();
-            while (await reader.ReadAsync(cancellationToken))
+            await using (var reader = await dataCommand.ExecuteReaderAsync(cancellationToken))
             {
-                employees.Add(MapEmployeeFromReader(reader));
+                while (await reader.ReadAsync(cancellationToken))
+                {
+                    employees.Add(MapEmployeeFromReader(reader));
+                    
+                    if (filteredCount == 0)
+                    {
+                        filteredCount = reader.GetInt32(reader.GetOrdinal("total_count"));
+                    }
+                }
             }
 
-            return employees;
+            return (employees, filteredCount);
         }
         catch (NpgsqlException ex)
         {
@@ -37,9 +51,8 @@ public class EmployeeRepository(NpgsqlDataSource dataSource)
         }
     }
 
-    private static EmployeeDto MapEmployeeFromReader(NpgsqlDataReader reader)
-    {
-        return new EmployeeDto
+    private static EmployeeDto MapEmployeeFromReader(NpgsqlDataReader reader) =>
+        new()
         {
             Id = reader.GetInt32(reader.GetOrdinal("id")),
             FirstName = reader.GetString(reader.GetOrdinal("first_name")),
@@ -53,5 +66,4 @@ public class EmployeeRepository(NpgsqlDataSource dataSource)
             Phone = reader.GetString(reader.GetOrdinal("phone")),
             ResponsibilityStatus = reader.GetString(reader.GetOrdinal("responsibility_status"))
         };
-    }
 }
